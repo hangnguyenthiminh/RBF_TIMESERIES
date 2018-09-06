@@ -1,0 +1,20 @@
+C:\Users\admin\Downloads\HANG\encog-dotnet-core-3.4\encog-dotnet-core-3.4\encog-core-cs\bin\Debug\encog-core-cs.xml
+C:\Users\admin\Downloads\HANG\encog-dotnet-core-3.4\encog-dotnet-core-3.4\encog-core-cs\bin\Debug\encog-core-cs.dll
+C:\Users\admin\Downloads\HANG\encog-dotnet-core-3.4\encog-dotnet-core-3.4\encog-core-cs\bin\Debug\encog-core-cs.pdb
+C:\Users\admin\Downloads\HANG\encog-dotnet-core-3.4\encog-dotnet-core-3.4\encog-core-cs\obj\Debug\encog-core-cs.csprojResolveAssemblyReference.cache
+C:\Users\admin\Downloads\HANG\encog-dotnet-core-3.4\encog-dotnet-core-3.4\encog-core-cs\obj\Debug\Encog.encog-core-cs.resources
+C:\Users\admin\Downloads\HANG\encog-dotnet-core-3.4\encog-dotnet-core-3.4\encog-core-cs\obj\Debug\Encog.ML.Data.Market.Loader.CSVFormLoader.resources
+C:\Users\admin\Downloads\HANG\encog-dotnet-core-3.4\encog-dotnet-core-3.4\encog-core-cs\obj\Debug\Encog.Util.Simple.TrainingDialog.resources
+C:\Users\admin\Downloads\HANG\encog-dotnet-core-3.4\encog-dotnet-core-3.4\encog-core-cs\obj\Debug\encog-core-cs.csproj.GenerateResource.Cache
+C:\Users\admin\Downloads\HANG\encog-dotnet-core-3.4\encog-dotnet-core-3.4\encog-core-cs\obj\Debug\encog-core-cs.dll
+C:\Users\admin\Downloads\HANG\encog-dotnet-core-3.4\encog-dotnet-core-3.4\encog-core-cs\obj\Debug\encog-core-cs.pdb
+C:\DO AN TOT NGHIEP\RBF_TIMESERIES\encog-core-cs\bin\Debug\encog-core-cs.xml
+C:\DO AN TOT NGHIEP\RBF_TIMESERIES\encog-core-cs\bin\Debug\encog-core-cs.dll
+C:\DO AN TOT NGHIEP\RBF_TIMESERIES\encog-core-cs\bin\Debug\encog-core-cs.pdb
+C:\DO AN TOT NGHIEP\RBF_TIMESERIES\encog-core-cs\obj\Debug\encog-core-cs.csprojResolveAssemblyReference.cache
+C:\DO AN TOT NGHIEP\RBF_TIMESERIES\encog-core-cs\obj\Debug\Encog.encog-core-cs.resources
+C:\DO AN TOT NGHIEP\RBF_TIMESERIES\encog-core-cs\obj\Debug\Encog.ML.Data.Market.Loader.CSVFormLoader.resources
+C:\DO AN TOT NGHIEP\RBF_TIMESERIES\encog-core-cs\obj\Debug\Encog.Util.Simple.TrainingDialog.resources
+C:\DO AN TOT NGHIEP\RBF_TIMESERIES\encog-core-cs\obj\Debug\encog-core-cs.csproj.GenerateResource.Cache
+C:\DO AN TOT NGHIEP\RBF_TIMESERIES\encog-core-cs\obj\Debug\encog-core-cs.dll
+C:\DO AN TOT NGHIEP\RBF_TIMESERIES\encog-core-cs\obj\Debug\encog-core-cs.pdb
