@@ -6,6 +6,11 @@ using System.Windows.Forms;
 using System.Data;
 using System.IO;
 using System.Threading;
+using Encog.ML.Data.Basic;
+using Encog.Neural.Rbf.Training;
+using Encog.Neural.RBF;
+using Encog.Neural.Pattern;
+using Encog.MathUtil.RBF;
 
 namespace RBF_TIMESERIES
 {
@@ -115,6 +120,24 @@ namespace RBF_TIMESERIES
             }
         }
 
+        // Delegates to enable async calls for setting controls properties
+        private delegate void SetTextCallback(System.Windows.Forms.Control control, string text);
+        private delegate void AddSubItemCallback(System.Windows.Forms.ListView control, int item, string subitemText);
+
+        // Thread safe updating of control's text property
+        private void SetText(System.Windows.Forms.Control control, string text)
+        {
+            if (control.InvokeRequired)
+            {
+                SetTextCallback d = new SetTextCallback(SetText);
+                Invoke(d, new object[] { control, text });
+            }
+            else
+            {
+                control.Text = text;
+            }
+        }
+
         private void btnLoadData_Click(object sender, EventArgs e)
         {
             // show file selection dialog
@@ -135,7 +158,6 @@ namespace RBF_TIMESERIES
                     string[] lines = System.IO.File.ReadAllLines(openFileDialog.FileName);
 
                     // Display the file contents by using a foreach loop.
-                    System.Console.WriteLine("Contents of WriteLines2.txt = ");
                     foreach (string line in lines)
                     {
                         // Use a tab to indent each line of the file.
@@ -167,15 +189,106 @@ namespace RBF_TIMESERIES
                 // update list and chart
                 UpdateDataListView();
                 // enable "Start" button
-                //startButton.Enabled = true;
+                btnStart.Enabled = true;
             }
+        }
+
+        private Boolean StringIsNull(string text)
+        {
+            if(text.Equals(null) || text.Equals(""))
+            {
+                return true;
+            }
+            return false;
         }
 
         private void btnStart_Click(object sender, EventArgs e)
         {
+            //Get input from Form
+            //Get testing rate
+            if (!StringIsNull(txtTestingRate.Text))
+            {
+                testingRate = double.Parse(txtTestingRate.Text);
+            }
+
+            //Get window size
+            if (!StringIsNull(txtWindowSize.Text))
+            {
+                windowSize = int.Parse(txtWindowSize.Text);
+            }
+
+            //Step1: Get inputTrain, idealTrain, inputTest, idealTest
             GetTrainTest(data, out train, out test, testingRate);
             GetInputIdeal(train, out inputTrain, out idealTrain, windowSize);
             GetInputIdeal(train, out inputTest, out idealTest, windowSize);
+            Console.WriteLine("Get data success!!");
+
+
+
+            //Step2: Caculate train Error
+            //Specify the number of dimensions and the number of neurons per dimension
+            const int dimensions = 2;
+            const int numNeuronsPerDimension = 7;
+
+            //Set the standard RBF neuron width. 
+            //Literature seems to suggest this is a good default value.
+            const double volumeNeuronWidth = 2.0 / numNeuronsPerDimension;
+
+            //RBF can struggle when it comes to flats at the edge of the sample space.
+            //We have added the ability to include wider neurons on the sample space boundary which greatly
+            //improves fitting to flats
+            const bool includeEdgeRBFs = true;
+
+            #region Setup
+
+            //General setup is the same as before
+            var pattern = new RadialBasisPattern();
+            pattern.InputNeurons = dimensions;
+            pattern.OutputNeurons = 1;
+
+            //Total number of neurons required.
+            //Total number of Edges is calculated possibly for future use but not used any further here
+            int numNeurons = (int)Math.Pow(numNeuronsPerDimension, dimensions);
+            // int numEdges = (int) (dimensions*Math.Pow(2, dimensions - 1));
+
+            pattern.AddHiddenLayer(numNeurons);
+
+            var network = (RBFNetwork)pattern.Generate();
+            //RadialBasisFunctionLayer rbfLayer = (RadialBasisFunctionLayer)network.GetLayer(RadialBasisPattern.RBF_LAYER);
+
+
+            //Position the multidimensional RBF neurons, with equal spacing, within the provided sample space from 0 to 1.
+            //rbfLayer.SetRBFCentersAndWidthsEqualSpacing(0, 1, RBFEnum.Gaussian, dimensions, volumeNeuronWidth, includeEdgeRBFs);
+            network.SetRBFCentersAndWidthsEqualSpacing(0, 1, RBFEnum.Gaussian, volumeNeuronWidth, includeEdgeRBFs);
+
+            #endregion
+
+            //Create some training data that can not easily be represented by gaussians
+            //There are other training examples for both 1D and 2D
+            //Degenerate training data only provides outputs as 1 or 0 (averaging over all outputs for a given set of inputs would produce something approaching the smooth training data).
+            //Smooth training data provides true values for the provided input dimensions.
+            //Create2DSmoothTainingDataGit();
+
+            //Create the training set and train.
+            var trainingSet = new BasicMLDataSet(inputTrain, idealTrain);
+            var trainNW = new SVDTraining(network, trainingSet);
+
+            //SVD is a single step solve
+            int epoch = 1;
+            do
+            {
+                trainNW.Iteration();
+                Console.WriteLine(@"Epoch #" + epoch + @" Error:" + trainNW.Error);
+                epoch++;
+            } while ((epoch < 1) && (trainNW.Error > 0.001));
+            //Set Textbox
+            SetText(txtTrainErr, trainNW.Error.ToString("F5"));
+
+
+            //Step3: Caculate Test Error
+
+
         }
+
     }
 }

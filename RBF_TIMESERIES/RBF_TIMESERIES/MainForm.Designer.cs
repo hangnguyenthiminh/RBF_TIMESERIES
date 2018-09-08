@@ -32,8 +32,6 @@
             this.dataList = new System.Windows.Forms.ListView();
             this.colIndex = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colRealData = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colTrainData = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colTestData = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colForcasteData = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnLoadData = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -60,7 +58,7 @@
             this.groupBox1.Controls.Add(this.btnLoadData);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(395, 450);
+            this.groupBox1.Size = new System.Drawing.Size(311, 450);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Load data to train";
@@ -70,14 +68,12 @@
             this.dataList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colIndex,
             this.colRealData,
-            this.colTrainData,
-            this.colTestData,
             this.colForcasteData});
             this.dataList.FullRowSelect = true;
             this.dataList.GridLines = true;
-            this.dataList.Location = new System.Drawing.Point(6, 19);
+            this.dataList.Location = new System.Drawing.Point(0, 19);
             this.dataList.Name = "dataList";
-            this.dataList.Size = new System.Drawing.Size(383, 396);
+            this.dataList.Size = new System.Drawing.Size(296, 396);
             this.dataList.TabIndex = 0;
             this.dataList.UseCompatibleStateImageBehavior = false;
             this.dataList.View = System.Windows.Forms.View.Details;
@@ -90,16 +86,7 @@
             // colRealData
             // 
             this.colRealData.Text = "Real Data";
-            this.colRealData.Width = 67;
-            // 
-            // colTrainData
-            // 
-            this.colTrainData.Text = "Train Data";
-            this.colTrainData.Width = 74;
-            // 
-            // colTestData
-            // 
-            this.colTestData.Text = "Test Data";
+            this.colRealData.Width = 82;
             // 
             // colForcasteData
             // 
@@ -118,9 +105,9 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Location = new System.Drawing.Point(413, 12);
+            this.groupBox2.Location = new System.Drawing.Point(329, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(469, 450);
+            this.groupBox2.Size = new System.Drawing.Size(553, 450);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             // 
@@ -148,7 +135,6 @@
             // 
             // txtTestingRate
             // 
-            this.txtTestingRate.AllowDrop = true;
             this.txtTestingRate.Location = new System.Drawing.Point(113, 35);
             this.txtTestingRate.Name = "txtTestingRate";
             this.txtTestingRate.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -168,6 +154,7 @@
             // 
             this.txtWindowSize.Location = new System.Drawing.Point(113, 74);
             this.txtWindowSize.Name = "txtWindowSize";
+            this.txtWindowSize.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.txtWindowSize.Size = new System.Drawing.Size(56, 20);
             this.txtWindowSize.TabIndex = 2;
             // 
@@ -207,6 +194,7 @@
             // 
             // btnStart
             // 
+            this.btnStart.Enabled = false;
             this.btnStart.Location = new System.Drawing.Point(67, 172);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
@@ -275,8 +263,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtTestingRate;
         private System.Windows.Forms.ColumnHeader colIndex;
-        private System.Windows.Forms.ColumnHeader colTrainData;
-        private System.Windows.Forms.ColumnHeader colTestData;
         private System.Windows.Forms.GroupBox groupBox4;
     }
 }
