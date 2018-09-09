@@ -224,7 +224,7 @@ namespace RBF_TIMESERIES
             GetInputIdeal(train, out inputTrain, out idealTrain, windowSize);
             GetInputIdeal(train, out inputTest, out idealTest, windowSize);
 
-            //Step2: Caculate train Error
+            //Step2: Compute train Error
             //Specify the number of dimensions and the number of neurons per dimension
             const int dimensions = 2;
             const int numNeuronsPerDimension = 7;
@@ -283,7 +283,7 @@ namespace RBF_TIMESERIES
             SetText(txtTrainErr, trainNW.Error.ToString("F5"));
 
 
-            //Step3: Caculate Test Error
+            //Step3: Compute Test Error
             trainingSet = new BasicNeuralDataSet(inputTest, idealTest);
 
             int totalNumber = idealTest.Length;
@@ -305,7 +305,7 @@ namespace RBF_TIMESERIES
                 }
                 i++;
             }
-            //Caculate average error
+            //Compute average error
             errorTest = sumError / totalNumber;
             //Set Textbox
             SetText(txtTestErr, errorTest.ToString("F5"));
