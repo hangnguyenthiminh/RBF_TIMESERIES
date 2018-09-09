@@ -11,6 +11,8 @@ using Encog.Neural.Rbf.Training;
 using Encog.Neural.RBF;
 using Encog.Neural.Pattern;
 using Encog.MathUtil.RBF;
+using Encog.Neural.Data.Basic;
+using Encog.ML.Data;
 
 namespace RBF_TIMESERIES
 {
@@ -195,7 +197,7 @@ namespace RBF_TIMESERIES
 
         private Boolean StringIsNull(string text)
         {
-            if(text.Equals(null) || text.Equals(""))
+            if (text.Equals(null) || text.Equals(""))
             {
                 return true;
             }
@@ -221,9 +223,6 @@ namespace RBF_TIMESERIES
             GetTrainTest(data, out train, out test, testingRate);
             GetInputIdeal(train, out inputTrain, out idealTrain, windowSize);
             GetInputIdeal(train, out inputTest, out idealTest, windowSize);
-            Console.WriteLine("Get data success!!");
-
-
 
             //Step2: Caculate train Error
             //Specify the number of dimensions and the number of neurons per dimension
@@ -278,7 +277,6 @@ namespace RBF_TIMESERIES
             do
             {
                 trainNW.Iteration();
-                Console.WriteLine(@"Epoch #" + epoch + @" Error:" + trainNW.Error);
                 epoch++;
             } while ((epoch < 1) && (trainNW.Error > 0.001));
             //Set Textbox
@@ -286,9 +284,32 @@ namespace RBF_TIMESERIES
 
 
             //Step3: Caculate Test Error
+            trainingSet = new BasicNeuralDataSet(inputTest, idealTest);
 
+            int totalNumber = idealTest.Length;
+            double errorTest = 0;
+            double sumError = 0;
+            int i = 0;
+
+            foreach (IMLDataPair pair in trainingSet)
+            {
+                var output = network.Compute(pair.Input);
+                double[] outputDb = ((Encog.ML.Data.Basic.BasicMLData)output).Data;
+                
+                foreach (double ideal in idealTest[i])
+                {
+                    foreach(double x in outputDb)
+                    {
+                        sumError += Math.Abs(ideal - x);
+                    }
+                }
+                i++;
+            }
+            //Caculate average error
+            errorTest = sumError / totalNumber;
+            //Set Textbox
+            SetText(txtTestErr, errorTest.ToString("F5"));
 
         }
-
     }
 }
