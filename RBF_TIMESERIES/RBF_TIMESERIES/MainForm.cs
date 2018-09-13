@@ -204,6 +204,20 @@ namespace RBF_TIMESERIES
             return false;
         }
 
+        // Thread safe adding of subitem to list control
+        private void AddSubItem(System.Windows.Forms.ListView control, int item, string subitemText)
+        {
+            if (control.InvokeRequired)
+            {
+                AddSubItemCallback d = new AddSubItemCallback(AddSubItem);
+                Invoke(d, new object[] { control, item, subitemText });
+            }
+            else
+            {
+                control.Items[item].SubItems.Add(subitemText);
+            }
+        }
+
         private void btnStart_Click(object sender, EventArgs e)
         {
             //Get input from Form
@@ -290,21 +304,21 @@ namespace RBF_TIMESERIES
             double errorTest = 0;
             double sumError = 0;
             int i = 0;
-
+            int j = windowSize;
             foreach (IMLDataPair pair in trainingSet)
             {
                 var output = network.Compute(pair.Input);
                 double[] outputDb = ((Encog.ML.Data.Basic.BasicMLData)output).Data;
-                
+
+                //Compute sumError
                 foreach (double ideal in idealTest[i])
                 {
-                    foreach(double x in outputDb)
-                    {
-                        sumError += Math.Abs(ideal - x);
-                    }
+                    sumError += Math.Abs(ideal - outputDb[0]);
                 }
                 i++;
+                j++;
             }
+
             //Compute average error
             errorTest = sumError / totalNumber;
             //Set Textbox

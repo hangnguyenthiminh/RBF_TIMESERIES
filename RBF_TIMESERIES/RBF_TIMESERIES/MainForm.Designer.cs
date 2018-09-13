@@ -86,7 +86,7 @@
             // colRealData
             // 
             this.colRealData.Text = "Real Data";
-            this.colRealData.Width = 82;
+            this.colRealData.Width = 86;
             // 
             // colForcasteData
             // 
