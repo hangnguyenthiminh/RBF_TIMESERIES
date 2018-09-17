@@ -127,9 +127,11 @@ namespace Encog.Neural.Rbf.Training
                 .TrainingToArray(Training);
 
             double[][] matrix = EngineArray.AllocateDouble2D(length, network.OutputCount);
-
+            //convert flat double[] weight to matrix weight
             FlatToMatrix(network.Flat.Weights, 0, matrix);
+            //compute matrix weight and error 
             Error = SVD.Svdfit(data.A, data.B, matrix, funcs);
+            //convert matrix weight to flat double[] weight
             MatrixToFlat(matrix, network.Flat.Weights, 0);
         }
 

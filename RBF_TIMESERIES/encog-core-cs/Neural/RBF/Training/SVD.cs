@@ -1,4 +1,4 @@
-//
+﻿//
 // Encog(tm) Core v3.3 - .Net Version
 // http://www.heatonresearch.com/encog/
 //
@@ -69,15 +69,20 @@ namespace Encog.Neural.RBF.Training
                 if (w[j] > wmax)
                     wmax = w[j];
 
-            thresh = TOL*wmax;
+            thresh = TOL * wmax;
 
             for (j = 0; j < funcs.Length; j++)
                 if (w[j] < thresh)
                     w[j] = 0;
 
             //Perform back substitution to get result
+            // Compute weight: double[49][] a 
             Svdbksb(u, w, v, y, a);
-
+            //DoWeight -> bestWeight (use GA)
+            int maxIteration = 100;
+            double[] bestWeight = DoWeight(a, maxIteration);
+            //SetWeight -> Error (use SVD) same pso
+            //
             //Calculate chi squared for the fit
             double chisq = 0;
             for (k = 0; k < y[0].Length; k++)
@@ -86,14 +91,39 @@ namespace Encog.Neural.RBF.Training
                 {
                     sum = 0.0d;
                     for (j = 0; j < funcs.Length; j++)
-                        sum += a[j][k]*funcs[j].Calculate(x[i]);
+                        sum += a[j][k] * funcs[j].Calculate(x[i]);
                     tmp = (y[i][k] - sum);
-                    chisq += tmp*tmp;
+                    chisq += tmp * tmp;
                 }
             }
 
-            return Math.Sqrt(chisq/(y.Length*y[0].Length));
+            return Math.Sqrt(chisq / (y.Length * y[0].Length));
         }
+
+        private static double[] DoWeight(double[][] weights, int maxIteration)
+        {
+            //convert matrix to flat
+            double[] flatWeights = new double[weights.Length];
+            int rows = weights.Length;
+            int cols = weights[0].Length;
+
+            int index = 0;
+
+            for (int r = 0; r < rows; r++)
+            {
+                for (int c = 0; c < cols; c++)
+                {
+                    flatWeights[index++] = weights[r][c];
+                }
+            }
+            //hoán vị tập weight 
+
+            //khởi tạo quần thể
+
+            //
+            return flatWeights;
+        }
+
 
         public static void Svdbksb(double[][] u, double[] w, double[][] v,
                                    double[][] b, double[][] x)
@@ -115,7 +145,7 @@ namespace Encog.Neural.RBF.Training
                     if (w[j] != 0)
                     {
                         for (i = 0; i < m; i++)
-                            s += u[i][j]*b[i][k];
+                            s += u[i][j] * b[i][k];
                         s /= w[j];
                     }
                     temp[j] = s;
@@ -125,7 +155,7 @@ namespace Encog.Neural.RBF.Training
                 {
                     s = 0;
                     for (jj = 0; jj < n; jj++)
-                        s += v[j][jj]*temp[jj];
+                        s += v[j][jj] * temp[jj];
                     x[j][k] = s;
                 }
             }
@@ -153,7 +183,7 @@ namespace Encog.Neural.RBF.Training
             for (i = 0; i < n; i++)
             {
                 l = i + 2;
-                rv1[i] = scale*g;
+                rv1[i] = scale * g;
                 g = s = scale = 0.0d;
                 if (i < m)
                 {
@@ -164,25 +194,25 @@ namespace Encog.Neural.RBF.Training
                         for (k = i; k < m; k++)
                         {
                             a[k][i] /= scale;
-                            s += a[k][i]*a[k][i];
+                            s += a[k][i] * a[k][i];
                         }
                         f = a[i][i];
                         g = -SIGN(Math.Sqrt(s), f);
-                        h = f*g - s;
+                        h = f * g - s;
                         a[i][i] = f - g;
                         for (j = l - 1; j < n; j++)
                         {
                             for (s = 0.0d, k = i; k < m; k++)
-                                s += a[k][i]*a[k][j];
-                            f = s/h;
+                                s += a[k][i] * a[k][j];
+                            f = s / h;
                             for (k = i; k < m; k++)
-                                a[k][j] += f*a[k][i];
+                                a[k][j] += f * a[k][i];
                         }
                         for (k = i; k < m; k++)
                             a[k][i] *= scale;
                     }
                 }
-                w[i] = scale*g;
+                w[i] = scale * g;
                 g = s = scale = 0.0d;
                 if (i + 1 <= m && i + 1 != n)
                 {
@@ -193,20 +223,20 @@ namespace Encog.Neural.RBF.Training
                         for (k = l - 1; k < n; k++)
                         {
                             a[i][k] /= scale;
-                            s += a[i][k]*a[i][k];
+                            s += a[i][k] * a[i][k];
                         }
                         f = a[i][l - 1];
                         g = -SIGN(Math.Sqrt(s), f);
-                        h = f*g - s;
+                        h = f * g - s;
                         a[i][l - 1] = f - g;
                         for (k = l - 1; k < n; k++)
-                            rv1[k] = a[i][k]/h;
+                            rv1[k] = a[i][k] / h;
                         for (j = l - 1; j < m; j++)
                         {
                             for (s = 0.0d, k = l - 1; k < n; k++)
-                                s += a[j][k]*a[i][k];
+                                s += a[j][k] * a[i][k];
                             for (k = l - 1; k < n; k++)
-                                a[j][k] += s*rv1[k];
+                                a[j][k] += s * rv1[k];
                         }
                         for (k = l - 1; k < n; k++)
                             a[i][k] *= scale;
@@ -221,13 +251,13 @@ namespace Encog.Neural.RBF.Training
                     if (g != 0.0d)
                     {
                         for (j = l; j < n; j++)
-                            v[j][i] = (a[i][j]/a[i][l])/g;
+                            v[j][i] = (a[i][j] / a[i][l]) / g;
                         for (j = l; j < n; j++)
                         {
                             for (s = 0.0d, k = l; k < n; k++)
-                                s += a[i][k]*v[k][j];
+                                s += a[i][k] * v[k][j];
                             for (k = l; k < n; k++)
-                                v[k][j] += s*v[k][i];
+                                v[k][j] += s * v[k][i];
                         }
                     }
                     for (j = l; j < n; j++)
@@ -245,14 +275,14 @@ namespace Encog.Neural.RBF.Training
                     a[i][j] = 0.0d;
                 if (g != 0.0d)
                 {
-                    g = 1.0d/g;
+                    g = 1.0d / g;
                     for (j = l; j < n; j++)
                     {
                         for (s = 0.0d, k = l; k < m; k++)
-                            s += a[k][i]*a[k][j];
-                        f = (s/a[i][i])*g;
+                            s += a[k][i] * a[k][j];
+                        f = (s / a[i][i]) * g;
                         for (k = i; k < m; k++)
-                            a[k][j] += f*a[k][i];
+                            a[k][j] += f * a[k][i];
                     }
                     for (j = i; j < m; j++)
                         a[j][i] *= g;
@@ -284,22 +314,22 @@ namespace Encog.Neural.RBF.Training
                         s = 1.0d;
                         for (i = l; i < k + 1; i++)
                         {
-                            f = s*rv1[i];
-                            rv1[i] = c*rv1[i];
+                            f = s * rv1[i];
+                            rv1[i] = c * rv1[i];
                             if (Math.Abs(f) + anorm == anorm)
                                 break;
                             g = w[i];
                             h = Pythag(f, g);
                             w[i] = h;
-                            h = 1.0d/h;
-                            c = g*h;
-                            s = -f*h;
+                            h = 1.0d / h;
+                            c = g * h;
+                            s = -f * h;
                             for (j = 0; j < m; j++)
                             {
                                 y = a[j][nm];
                                 z = a[j][i];
-                                a[j][nm] = y*c + z*s;
-                                a[j][i] = z*c - y*s;
+                                a[j][nm] = y * c + z * s;
+                                a[j][i] = z * c - y * s;
                             }
                         }
                     }
@@ -323,48 +353,48 @@ namespace Encog.Neural.RBF.Training
                     y = w[nm];
                     g = rv1[nm];
                     h = rv1[k];
-                    f = ((y - z)*(y + z) + (g - h)*(g + h))/(2.0d*h*y);
+                    f = ((y - z) * (y + z) + (g - h) * (g + h)) / (2.0d * h * y);
                     g = Pythag(f, 1.0d);
-                    f = ((x - z)*(x + z) + h*((y/(f + SIGN(g, f))) - h))/x;
+                    f = ((x - z) * (x + z) + h * ((y / (f + SIGN(g, f))) - h)) / x;
                     c = s = 1.0d;
                     for (j = l; j <= nm; j++)
                     {
                         i = j + 1;
                         g = rv1[i];
                         y = w[i];
-                        h = s*g;
-                        g = c*g;
+                        h = s * g;
+                        g = c * g;
                         z = Pythag(f, h);
                         rv1[j] = z;
-                        c = f/z;
-                        s = h/z;
-                        f = x*c + g*s;
-                        g = g*c - x*s;
-                        h = y*s;
+                        c = f / z;
+                        s = h / z;
+                        f = x * c + g * s;
+                        g = g * c - x * s;
+                        h = y * s;
                         y *= c;
                         for (jj = 0; jj < n; jj++)
                         {
                             x = v[jj][j];
                             z = v[jj][i];
-                            v[jj][j] = x*c + z*s;
-                            v[jj][i] = z*c - x*s;
+                            v[jj][j] = x * c + z * s;
+                            v[jj][i] = z * c - x * s;
                         }
                         z = Pythag(f, h);
                         w[j] = z;
                         if (z != 0)
                         {
-                            z = 1.0d/z;
-                            c = f*z;
-                            s = h*z;
+                            z = 1.0d / z;
+                            c = f * z;
+                            s = h * z;
                         }
-                        f = c*g + s*y;
-                        x = c*y - s*g;
+                        f = c * g + s * y;
+                        x = c * y - s * g;
                         for (jj = 0; jj < m; jj++)
                         {
                             y = a[jj][j];
                             z = a[jj][i];
-                            a[jj][j] = y*c + z*s;
-                            a[jj][i] = z*c - y*s;
+                            a[jj][j] = y * c + z * s;
+                            a[jj][i] = z * c - y * s;
                         }
                     }
                     rv1[l] = 0.0d;
@@ -419,12 +449,12 @@ namespace Encog.Neural.RBF.Training
             absa = Math.Abs(a);
             absb = Math.Abs(b);
             if (absa > absb)
-                return absa*Math.Sqrt(1.0d + (absb/absa)*(absb/absa));
+                return absa * Math.Sqrt(1.0d + (absb / absa) * (absb / absa));
             else
                 return ((absb == 0.0d)
                             ? 0.0d
                             : absb
-                              *Math.Sqrt(1.0d + (absa/absb)*(absa/absb)));
+                              * Math.Sqrt(1.0d + (absa / absb) * (absa / absb)));
         }
     }
 }

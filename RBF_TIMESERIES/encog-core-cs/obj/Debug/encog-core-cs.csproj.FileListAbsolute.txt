@@ -18,3 +18,13 @@ C:\DO AN TOT NGHIEP\RBF_TIMESERIES\encog-core-cs\obj\Debug\Encog.Util.Simple.Tra
 C:\DO AN TOT NGHIEP\RBF_TIMESERIES\encog-core-cs\obj\Debug\encog-core-cs.csproj.GenerateResource.Cache
 C:\DO AN TOT NGHIEP\RBF_TIMESERIES\encog-core-cs\obj\Debug\encog-core-cs.dll
 C:\DO AN TOT NGHIEP\RBF_TIMESERIES\encog-core-cs\obj\Debug\encog-core-cs.pdb
+D:\HANG\DO AN TOT NGHIEP\RBF_TIMESERIES\encog-core-cs\bin\Debug\encog-core-cs.xml
+D:\HANG\DO AN TOT NGHIEP\RBF_TIMESERIES\encog-core-cs\bin\Debug\encog-core-cs.dll
+D:\HANG\DO AN TOT NGHIEP\RBF_TIMESERIES\encog-core-cs\bin\Debug\encog-core-cs.pdb
+D:\HANG\DO AN TOT NGHIEP\RBF_TIMESERIES\encog-core-cs\obj\Debug\encog-core-cs.csprojResolveAssemblyReference.cache
+D:\HANG\DO AN TOT NGHIEP\RBF_TIMESERIES\encog-core-cs\obj\Debug\Encog.encog-core-cs.resources
+D:\HANG\DO AN TOT NGHIEP\RBF_TIMESERIES\encog-core-cs\obj\Debug\Encog.ML.Data.Market.Loader.CSVFormLoader.resources
+D:\HANG\DO AN TOT NGHIEP\RBF_TIMESERIES\encog-core-cs\obj\Debug\Encog.Util.Simple.TrainingDialog.resources
+D:\HANG\DO AN TOT NGHIEP\RBF_TIMESERIES\encog-core-cs\obj\Debug\encog-core-cs.csproj.GenerateResource.Cache
+D:\HANG\DO AN TOT NGHIEP\RBF_TIMESERIES\encog-core-cs\obj\Debug\encog-core-cs.dll
+D:\HANG\DO AN TOT NGHIEP\RBF_TIMESERIES\encog-core-cs\obj\Debug\encog-core-cs.pdb
