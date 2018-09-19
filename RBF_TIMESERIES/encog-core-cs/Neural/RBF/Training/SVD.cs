@@ -23,6 +23,7 @@
 using System;
 using Encog.MathUtil.RBF;
 using Encog.Util;
+using System.Collections;
 
 namespace Encog.Neural.RBF.Training
 {
@@ -117,16 +118,46 @@ namespace Encog.Neural.RBF.Training
                 }
             }
             //hoán vị tập weight 
-
+            Random rnd = new Random();
+            flatWeights = Shuffle(flatWeights);
             //khởi tạo quần thể
-
-            //
+            int popSize = 100;
+            ArrayList population = new ArrayList();
+            population = randomized(flatWeights, popSize);
+            Console.WriteLine("a");
             return flatWeights;
         }
 
+        private static ArrayList randomized(double[] weights, int popSize)
+        {
+
+            ArrayList pop = new ArrayList();
+            int i = 0;
+            while (i < popSize)
+            {
+                pop.Add(Shuffle(weights));
+                i++;
+            }
+            return pop;
+        }
+
+        public static double[] Shuffle(double[] array)
+        {
+            Random rnd = new Random();
+            int n = array.Length;
+            while (n > 1)
+            {
+                n--;
+                int k = rnd.Next(n + 1);
+                var temp = array[k];
+                array[k] = array[n];
+                array[n] = temp;
+            }
+            return array;
+        }
 
         public static void Svdbksb(double[][] u, double[] w, double[][] v,
-                                   double[][] b, double[][] x)
+                           double[][] b, double[][] x)
         {
             int jj, j, i, m, n, k;
             double s;
