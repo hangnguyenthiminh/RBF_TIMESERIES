@@ -24,6 +24,7 @@ using System;
 using Encog.MathUtil.RBF;
 using Encog.Util;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Encog.Neural.RBF.Training
 {
@@ -122,21 +123,21 @@ namespace Encog.Neural.RBF.Training
             flatWeights = Shuffle(flatWeights);
             //khởi tạo quần thể
             int popSize = 100;
-            ArrayList population = new ArrayList();
+            List<double[]> population = new List<double[]>();
             population = randomized(flatWeights, popSize);
             Console.WriteLine("a");
+            //Tìm độ thích nghi
+
+
             return flatWeights;
         }
 
-        private static ArrayList randomized(double[] weights, int popSize)
+        private static List<double[]> randomized(double[] weights, int popSize)
         {
-
-            ArrayList pop = new ArrayList();
-            int i = 0;
-            while (i < popSize)
+            List<double[]> pop = new List<double[]>();
+            for (int i = 0; i < popSize; i++)
             {
                 pop.Add(Shuffle(weights));
-                i++;
             }
             return pop;
         }
